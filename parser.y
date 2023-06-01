@@ -45,7 +45,6 @@ directly eith the bash variables table.
 
 %type   <real_value>    scalar_expr scalar
 %type   <boolean_value> boolean_expr boolean
-%type   <hex_value>     hex_expr    hex
 
 /* If you use the union notation, then you need to
 specify the type of each non-terminal
