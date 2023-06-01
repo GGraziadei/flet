@@ -1,0 +1,17 @@
+true;
+false;
+a = true;
+(a);
+{ a };
+!a;
+b = false;
+a&&b;
+true && true;
+a||b;
+c = 10;
+d = 10.11111;
+c>d;
+c<d;
+c == d;
+a = true;
+a ? 10 : 5;
