@@ -10,6 +10,9 @@ main: parser.tab.o lex.yy.o sym_table.o main.o
 parser.tab.c: parser.y
 	bison -d parser.y
 
+parser_yacc.tab.c: parser.y
+	yacc -d parser.y
+
 lex.yy.c: scanner.l
 	flex scanner.l
 
