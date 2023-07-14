@@ -68,7 +68,7 @@ skip ({newLine}|" "|\t|{comment})
 
 "pi"|"PI" { return PI; }
 "e"|"E" { return E; }
-"sqrt2|SQRT2" { return SQRT2; } 
+"sqrt2"|"SQRT2" { return SQRT2; } 
 
 "++" { return INCREMENT; }
 "--" { return DECREMENT; }

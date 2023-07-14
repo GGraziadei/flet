@@ -5,7 +5,8 @@
 
 /* Function used to push an entry in the symbol table (Scalar) */
 sym_entry *sym_table_put_scalar(char const *name, float value){
-  if(sym_table_get_scalar(name) != -1.0)
+  float val;
+  if(sym_table_get_scalar(name, &val) == FOUND )
     return NULL;
   sym_entry *new_node = (sym_entry *) malloc(sizeof(sym_entry));
   new_node->name = name;
@@ -17,23 +18,25 @@ sym_entry *sym_table_put_scalar(char const *name, float value){
 }
 
 /* Function used to push an entry in the symbol table (Scalar) */
-sym_entry *sym_table_update_scalar(char const *name, float value){
-  if(sym_table_get_scalar(name) == -1.0)
-    return NULL;
+status_e sym_table_update_scalar(char const *name, float value){
+  
   for (sym_entry *p = sym_table; p; p = p->next)
     if(strcmp (p->name, name) == 0){
        p->value.real_value = value;
-       return p;
+       return UPDATED;
     }
-      return NULL;
+    
+  return NOT_FOUND;
 }
 
 /* Function used to update an entry of the symbol table (scalar)*/
-float sym_table_get_scalar(char const *name){
+status_e sym_table_get_scalar(char const *name, float* val){
   for (sym_entry *p = sym_table; p; p = p->next)
-    if(strcmp (p->name, name) == 0)
-      return p->value.real_value;
-  return -1.0;
+    if(strcmp (p->name, name) == 0){
+      *val = p->value.real_value;
+      return FOUND;
+    }
+  return NOT_FOUND;
 }
 
 /* Function used to free the symbol table */

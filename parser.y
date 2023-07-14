@@ -8,6 +8,7 @@
   extern int yynerrs;
   extern int yylex();
   extern int yyerror();
+  extern int yyerror_fmt();
 }
 
 %code {
@@ -107,73 +108,154 @@ assignment: ID EQ scalar_expr
 
 op_assignment: ID  SUM scalar_expr
                   {
-                    float val = sym_table_get_scalar($1);
-                    val += $3;
-                    sym_table_update_scalar($1, val);
+                    
+                    float val;
+                    switch (sym_table_get_scalar($1, &val)) {
+                      case FOUND :
+                        float new_val = val + $3;
+                        if(sym_table_update_scalar($1, new_val) != UPDATED ){
+                          yyerror_fmt("Generic error during update of %s value.", $1);
+                        }
+                        break;
+                      case NOT_FOUND:
+                      default : yyerror_fmt("Symbol %s not found.", $1); break;
+                    }
                     printf("scalar assignment:%s = %.5f\n",$1, val);
                   }  
                 |ID  SUB scalar_expr
                       {
-                        float val = sym_table_get_scalar($1);
-                        val -= $3;
-                        sym_table_update_scalar($1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            float new_val = val - $3;
+                            if(sym_table_update_scalar($1, new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
                         printf("scalar assignment:%s = %.5f\n",$1, val);
                       } 
                 |ID MUL scalar_expr
                       {
-                        float val = sym_table_get_scalar($1);
-                        val *= $3;
-                        sym_table_update_scalar($1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            float new_val = val * $3;
+                            if(sym_table_update_scalar($1, new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
                         printf("scalar assignment:%s = %.5f\n",$1, val);
                       } 
                 |ID  DIV scalar_expr 
                       {
-                        float val = sym_table_get_scalar($1);
-                        val /= $3;
-                        sym_table_update_scalar($1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            float new_val = val / $3;
+                            if(sym_table_update_scalar($1, new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
                         printf("scalar assignment:%s = %.5f\n",$1, val);
                       } 
                 |ID  MODULE scalar_expr
                       {
-                        int val = (int) sym_table_get_scalar($1);
-                        val %= (int)$3;
-                        sym_table_update_scalar($1, val);
-                        printf("scalar assignment:%s = %d\n",$1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            int new_val = ((int)val) % (int) $3;
+                            if(sym_table_update_scalar($1, (float) new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
+                        printf("scalar assignment:%s = %.5f\n",$1, val);
                       }
                 |ID  EXPEQ scalar_expr
                       {
-                        int val = sym_table_get_scalar($1);
-                        val = pow(val,$3);
-                        sym_table_update_scalar($1, val);
-                        printf("scalar assignment:%s = %d\n",$1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            int new_val = pow( ((int)val),(int) $3);
+                            if(sym_table_update_scalar($1, (float) new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
+                        printf("scalar assignment:%s = %.5f\n",$1, val);
                       } 
                 |ID  LSHIFTEQ scalar_expr
                       {
-                        int val = (int) sym_table_get_scalar($1);
-                        val <<= (int)$3;
-                        sym_table_update_scalar($1, val);
-                        printf("scalar assignment:%s = %d\n",$1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            int new_val = ((int)val) << (int) $3;
+                            if(sym_table_update_scalar($1, (float) new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
+                        printf("scalar assignment:%s = %.5f \n",$1, val);
                       } 
                 |ID  RSHIFTEQ scalar_expr
                       {
-                        int val = (int) sym_table_get_scalar($1);
-                        val >>= (int) $3;
-                        sym_table_update_scalar($1, val);
-                        printf("scalar assignment:%s = %d\n",$1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            int new_val = ((int)val) >> (int) $3;
+                            if(sym_table_update_scalar($1, (float) new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
+                        printf("scalar assignment:%s = %.5f \n",$1, val);
                       }  
                 |ID  ANDBIT scalar_expr
                       {
-                        int val = (int) sym_table_get_scalar($1);
-                        val &= (int) $3;
-                        sym_table_update_scalar($1, val);
-                        printf("scalar assignment:%s = %d\n",$1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            int new_val = ((int)val) & (int) $3;
+                            if(sym_table_update_scalar($1, (float) new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
+                        printf("scalar assignment:%s = %.5f \n",$1, val);
                       } 
                 |ID  ORBIT scalar_expr
                       {
-                        int val = (int) sym_table_get_scalar($1);
-                        val |= (int) $3;
-                        sym_table_update_scalar($1, val);
-                        printf("scalar assignment:%s = %d\n",$1, val);
+                        float val;
+                        switch (sym_table_get_scalar($1, &val)) {
+                          case FOUND :
+                            int new_val = ((int)val) | (int) $3;
+                            if(sym_table_update_scalar($1, (float) new_val) != UPDATED ){
+                              yyerror_fmt("Generic error during update of %s value.", $1);
+                            }
+                            break;
+                          case NOT_FOUND:
+                          default : yyerror_fmt("Symbol %s not found.", $1); break;
+                        }
+                        printf("scalar assignment:%s = %.5f \n",$1, val);
                       }
             ; 
           
@@ -218,25 +300,65 @@ scalar_expr: RO scalar_expr RC {$$ = $2;}
           | RAD2DEG RO scalar_expr RC {$$ = $3 * RAD2DEG ;}
           | ID INCREMENT
             {
-              $$ = sym_table_get_scalar($1);
-              sym_table_update_scalar($1, $$ + 1);
+              float val;
+              switch (sym_table_get_scalar($1, &val)) {
+                case FOUND :
+                  if(sym_table_update_scalar($1, val+1) == UPDATED ){
+                    $$ = val; 
+                  }else{
+                    yyerror_fmt("Generic error during update of %s value.", $1);
+                  }
+                  break;
+                case NOT_FOUND:
+                default : yyerror_fmt("Symbol %s not found.", $1); break;
+              }
             }  
           | ID DECREMENT 
             {
-              $$ = sym_table_get_scalar($1);
-              sym_table_update_scalar($1, $$ - 1);
+              float val;
+              switch (sym_table_get_scalar($1, &val)) {
+                case FOUND :
+                  if(sym_table_update_scalar($1, val-1) == UPDATED ){
+                    $$ = val; 
+                  }else{
+                    yyerror_fmt("Generic error during update of %s value.", $1);
+                  }
+                  break;
+                case NOT_FOUND:
+                default : yyerror_fmt("Symbol %s not found.", $1); break;
+              }
             }  
           | DECREMENT ID 
             {
-              float val = sym_table_get_scalar($2)-1;
-              sym_table_update_scalar($2, val );
-              $$ = val;
+              float val;
+              switch (sym_table_get_scalar($2, &val)) {
+                case FOUND :
+                  val -= 1;
+                  if(sym_table_update_scalar($2, val) == UPDATED ){
+                    $$ = val; 
+                  }else{
+                    yyerror_fmt("Generic error during update of %s value.", $2);
+                  }
+                  break;
+                case NOT_FOUND:
+                default : yyerror_fmt("Symbol %s not found.", $2); break;
+              }
             }  
           | INCREMENT ID 
             {
-              float val = sym_table_get_scalar($2)+1;
-              sym_table_update_scalar($2, val );
-              $$ = val;
+              float val;
+              switch (sym_table_get_scalar($2, &val)) {
+                case FOUND :
+                  val += 1;
+                  if(sym_table_update_scalar($2, val) == UPDATED ){
+                    $$ = val; 
+                  }else{
+                    yyerror_fmt("Generic error during update of %s value.", $2);
+                  }
+                  break;
+                case NOT_FOUND:
+                default : yyerror_fmt("Symbol %s not found.", $2); break;
+              }
             } 
           | scalar_expr AMPERSAND scalar_expr 
             {
@@ -268,13 +390,48 @@ scalar_expr: RO scalar_expr RC {$$ = $2;}
             }
           ;
 
-scalar :  ID  {$$ = sym_table_get_scalar($1); free((void *)$1);} 
+scalar :  ID  
+          {
+            float val;
+            switch (sym_table_get_scalar($1, &val)) {
+              case FOUND :
+                $$ = val; 
+                free((void *)$1);
+                break;
+              case NOT_FOUND:
+              default : {
+                yyerror_fmt("Symbol %s not found.\n", $1); break;
+              }
+            }
+          } 
           | SCALAR {$$ = $1;}
           | PI {$$ = M_PI; }
           | E {$$ = M_E; }
           | SQRT2 {$$ = M_SQRT2; }
-          | MINUS ID {$$ = -sym_table_get_scalar($2); free((void *)$2);} %prec UMINUS
-          | TILDE ID {$$ = ~((int)sym_table_get_scalar($2)); free((void *)$2);} 
+          | MINUS ID 
+            {
+              float val;
+              switch (sym_table_get_scalar($2, &val)) {
+                case FOUND :
+                  $$ = -val; 
+                  free((void *)$2);
+                  break;
+                case NOT_FOUND:
+                default : yyerror_fmt("Symbol %s not found.", $2); break;
+              }
+            } %prec UMINUS
+          | TILDE ID 
+            {
+              float val;
+              switch (sym_table_get_scalar($2, &val)) {
+                case FOUND :
+                  $$ = ~((int)val); 
+                  free((void *)$2);
+                  break;
+                case NOT_FOUND:
+                default : yyerror_fmt("Symbol %s not found.", $2); break;
+              }
+            } 
         ;
         
 boolean_expr :  boolean { $$ = $1; }
