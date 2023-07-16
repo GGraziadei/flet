@@ -2,26 +2,30 @@
 %option noyywrap
 
 %top{
+
   /* This goes at the top of the generated file */
   #include "parser.tab.h"
+
+  #define YY_DECL    int fyylex (FYYSTYPE *yylval, FYYLTYPE *yylloc)
+
   /* Since they are defined globally in the parser
   implementation file, we can use yylloc and yylval
   as global variables. */
-  extern YYLTYPE yyloc;
-  extern YYSTYPE yylval;
+  extern FYYLTYPE fyyloc;
+  extern FYYSTYPE fyylval;
   #include <string.h>
-  extern int yynerrs;
+  extern int fyynerrs;
 
   #define YY_USER_ACTION \
-    yylloc.first_line = yylloc.last_line; \
-    yylloc.first_column = yylloc.last_column; \
+    fyylloc.first_line = fyylloc.last_line; \
+    fyylloc.first_column = fyylloc.last_column; \
     for(int i = 0; yytext[i] != '\0'; i++) { \
         if(yytext[i] == '\n') { \
-            yylloc.last_line++; \
-            yylloc.last_column = 0; \
+            fyylloc.last_line++; \
+            fyylloc.last_column = 0; \
         } \
         else { \
-            yylloc.last_column++; \
+            fyylloc.last_column++; \
         } \
     }
 }
@@ -91,8 +95,8 @@ skip ({newLine}|" "|\t|{comment})
 
 {true} { return TRUE; }
 {false} { return FALSE; }
-{id} { yylval.string = strdup(yytext);   return ID; }
-{scalar} { yylval.real_value = atof(yytext); return SCALAR; }
+{id} { fyylval.string = strdup(yytext);   return ID; }
+{scalar} { fyylval.real_value = atof(yytext); return SCALAR; }
 {skip} { ; } 
 
 "," { return CM; }
@@ -117,4 +121,4 @@ skip ({newLine}|" "|\t|{comment})
 "|" { return PIPE; }
 "&" { return AMPERSAND; }
 
-. {printf("Syntax error at line %d:%d: %s\n", yylloc.first_line, yylloc.first_column, yytext); yynerrs++;}
+. {printf("Syntax error at line %d:%d: %s\n", fyylloc.first_line, fyylloc.first_column, yytext); fyynerrs++;}
