@@ -92,13 +92,6 @@ skip ({newLine}|" "|\t|{comment})
 "<<=" { return LSHIFTEQ; }
 "&="  { return ANDBIT; }
 "|="  { return ORBIT; }
-
-{true} { return TRUE; }
-{false} { return FALSE; }
-{id} { fyylval.string = strdup(yytext);   return ID; }
-{scalar} { fyylval.real_value = atof(yytext); return SCALAR; }
-{skip} { ; } 
-
 "," { return CM; }
 ";" { return S; }
 ":" { return C; }
@@ -121,4 +114,10 @@ skip ({newLine}|" "|\t|{comment})
 "|" { return PIPE; }
 "&" { return AMPERSAND; }
 
-. {printf("Syntax error at line %d:%d: %s\n", fyylloc.first_line, fyylloc.first_column, yytext); fyynerrs++;}
+{true} { return TRUE; }
+{false} { return FALSE; }
+{id} { fyylval.string = strdup(yytext);   return ID; }
+{scalar} { fyylval.real_value = atof(yytext); return SCALAR; }
+{skip} { ; } 
+
+. {printf("Flet scanner. Syntax error at line %d:%d: %s\n", fyylloc.first_line, fyylloc.first_column, yytext); fyynerrs++;}

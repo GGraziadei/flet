@@ -7,8 +7,8 @@ c_files = parser.tab.c parser.tab.h lex.yy.c lex.yy.h
 library: parser.tab.c lex.yy.c sym_table.c error.c
 	gcc -c -fPIC *.c 
 	gcc -shared -o libFlet.so *.o -lm
-	pwd  | sudo tee /etc/ld.so.conf
-	ldconfig
+#	pwd | sudo tee /etc/ld.so.conf
+#	ldconfig
 
 parser.tab.c: parser.y
 	bison -d parser.y
