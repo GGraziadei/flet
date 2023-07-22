@@ -1,4 +1,14 @@
-#include "flet_parser.h"
+#include "lib_flet.h"
+
+#include <stdio.h>
+#include "lex.yy.h"
+#include "parser.tab.h"
+#include "sym_table.h"
+
+extern int fyyparse (void);
+extern int fyydebug;
+
+sym_entry *sym_table = NULL; 
 
 int file_flet(char* file_name, int debug_mode){
   yyin = fopen(file_name, "r");

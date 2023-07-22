@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "flet_parser.h": "c"
+        "flet_parser.h": "c",
+        "lib_flet.h": "c"
     }
 }
