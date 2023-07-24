@@ -1,5 +1,5 @@
 .PHONY: clean
-objects = parser.tab.o lex.yy.o error.o sym_table.o lib_flet.o
+objects = parser.tab.o lex.yy.o error.o sym_table.o lib_flet.o 
 c_files = parser.tab.c parser.tab.h lex.yy.c lex.yy.h
 
 %.o : %.c
@@ -16,7 +16,7 @@ lex.yy.c: scanner.l
 	flex scanner.l
 
 clean:
-	-rm $(objects) $(c_files) lib_flet.a 
+	-rm $(objects) $(c_files) lib_flet.a main.o test
 
 test: main.c 
 	gcc -c main.c -o main.o
