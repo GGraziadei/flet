@@ -1,6 +1,15 @@
 # FLET - c lib 
 Evaluate arithmetic floating point expressions. This library is oriented to work with Bash.
 
+- [Authors](#authors)
+- [License](#license)
+- [Options](#options)
+- [Grammar](#grammar)
+- [Variable as operand](#variable-as-operand)
+- [Install](#install)
+- [Test](#test)
+- [Exit Status](#exit-status)
+
 ![alt text](img/bash-flet.gif "bash flet version")
 
 ## Authors 
