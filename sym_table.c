@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "sym_table.h"
 #include "parser.tab.h"
+#include <string.h>
 
 /* Function used to push an entry in the symbol table (Scalar) */
 sym_entry *sym_table_put_scalar(char const *name, float value){
@@ -9,8 +10,10 @@ sym_entry *sym_table_put_scalar(char const *name, float value){
   if(sym_table_get_scalar(name, &val) == FOUND )
     return NULL;
   sym_entry *new_node = (sym_entry *) malloc(sizeof(sym_entry));
-  new_node->name = name;
+  new_node->name = malloc( (strlen(name)+1) * sizeof(char)  );
+  strcpy(new_node->name, name); //
   new_node->type = SCALAR;
+  new_node->action = INSERT;
   (new_node->value).real_value = value;
   new_node->next = sym_table;
   sym_table = new_node;
@@ -20,6 +23,9 @@ sym_entry *sym_table_put_scalar(char const *name, float value){
 /* Function used to push an entry in the symbol table (Scalar) */
 status_e sym_table_update_scalar(char const *name, float value){
   
+  if(sym_table == NULL )
+    return NOT_FOUND;
+
   for (sym_entry *p = sym_table; p; p = p->next)
     if(strcmp (p->name, name) == 0){
        p->value.real_value = value;
@@ -31,6 +37,10 @@ status_e sym_table_update_scalar(char const *name, float value){
 
 /* Function used to update an entry of the symbol table (scalar)*/
 status_e sym_table_get_scalar(char const *name, float* val){
+  
+  if(sym_table == NULL )
+    return NOT_FOUND;
+  
   for (sym_entry *p = sym_table; p; p = p->next)
     if(strcmp (p->name, name) == 0){
       *val = p->value.real_value;
@@ -49,4 +59,5 @@ void free_sym_table(){
     free(p);
     p = n;
   }
+  sym_table = NULL;
 }

@@ -7,9 +7,16 @@ typedef enum status{
   UPDATED
 } status_e;
 
+typedef enum symbolaction{ 
+  UPDATE,
+  INSERT,
+  DELETE
+} symbolaction_e;
+
 typedef struct sym_entry{
-  char const *name; /* Name of the symbol */
+  char  *name; /* Name of the symbol */
   int type; /* Type of symbol */
+  symbolaction_e action;
   union
   {
     float real_value;
