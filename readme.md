@@ -17,9 +17,9 @@ This work is produced for academic purpose at the Politecnico di Torino.
 
 Course website: <https://www.skenz.it/compilers>
 
-Prof. Stefano Scanzio: <stefano.scanzio@polito.it>
-
 Gianluca Graziadei: <gianluca.graziadei@studenti.polito.it>
+
+Prof. Stefano Scanzio: <stefano.scanzio@polito.it>
 
 ## License
 <http://www.gnu.org/licenses/>
