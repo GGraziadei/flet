@@ -1,4 +1,4 @@
-/*Copyright (C) year1, year2, year3 copyright-holder
+/*Copyright (C) 2023 Gianluca Graziadei - Stefano Scanzio
 
  This file is part of Flet library.
 
